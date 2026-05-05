@@ -7,8 +7,8 @@ let renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// luz
-let light = new THREE.DirectionalLight(0xffffff, 3);
+// luz FORTE (sem erro de iluminação)
+let light = new THREE.DirectionalLight(0xffffff, 5);
 light.position.set(5,5,5);
 scene.add(light);
 
@@ -18,8 +18,9 @@ scene.add(grid);
 
 let loader = new THREE.GLTFLoader();
 
-let model, originalSize;
+let model;
 let scale = 1;
+let originalSize;
 
 loader.load(
   'sofa-base.glb',
@@ -30,23 +31,27 @@ loader.load(
     model = gltf.scene;
     scene.add(model);
 
-    // centralizar
-    let box = new THREE.Box3().setFromObject(model);
-    let center = new THREE.Vector3();
-    box.getCenter(center);
-    model.position.sub(center);
+    // FORÇA VISIBILIDADE TOTAL
+    model.scale.set(0.01, 0.01, 0.01);
+    model.position.set(0, 0, 0);
 
+    // MATERIAL FORÇADO (SEMPRE APARECE)
+    model.traverse(function(child){
+        if(child.isMesh){
+            child.material = new THREE.MeshNormalMaterial();
+        }
+    });
+
+    // MEDIÇÃO
+    let box = new THREE.Box3().setFromObject(model);
     let size = new THREE.Vector3();
     box.getSize(size);
 
     originalSize = size;
     updateUI(size);
 
-    // ajustar câmera
-    let maxDim = Math.max(size.x, size.y, size.z);
-    let distance = maxDim * 2;
-
-    camera.position.set(0, size.y, distance);
+    // CÂMERA FIXA
+    camera.position.set(0, 1, 3);
     camera.lookAt(0,0,0);
   },
 
@@ -77,7 +82,9 @@ function scaleDown(){
 }
 
 function apply(){
-    model.scale.set(scale,scale,scale);
+    if(!model) return;
+
+    model.scale.set(scale*0.01, scale*0.01, scale*0.01);
 
     let newSize = originalSize.clone().multiplyScalar(scale);
     updateUI(newSize);
