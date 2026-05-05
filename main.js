@@ -25,7 +25,7 @@ let model, originalSize;
 let scale = 1;
 
 loader.load(
-  'sofa-base.glb',
+'https://modelviewer.dev/shared-assets/models/Astronaut.glb'
 
   (gltf)=>{
     console.log("MODELO CARREGADO");
