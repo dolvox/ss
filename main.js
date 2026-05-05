@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.158/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
 
 let scene = new THREE.Scene();
 scene.background = new THREE.Color(0xaaaaaa);
@@ -10,23 +10,22 @@ let renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// luz forte
+// luz
 let light = new THREE.DirectionalLight(0xffffff, 3);
 light.position.set(5,5,5);
 scene.add(light);
 
-// grid (referência visual)
+// grid
 let grid = new THREE.GridHelper(10, 10);
 scene.add(grid);
 
 let loader = new GLTFLoader();
 
-let model;
-let originalSize;
+let model, originalSize;
 let scale = 1;
 
 loader.load(
-  'sofa-base.glb',
+  './sofa-base.glb',
 
   (gltf)=>{
     console.log("MODELO CARREGADO");
@@ -34,21 +33,19 @@ loader.load(
     model = gltf.scene;
     scene.add(model);
 
-    // CENTRALIZAR MODELO
+    // centralizar
     let box = new THREE.Box3().setFromObject(model);
     let center = new THREE.Vector3();
     box.getCenter(center);
-
     model.position.sub(center);
 
-    // CALCULAR TAMANHO
     let size = new THREE.Vector3();
     box.getSize(size);
 
     originalSize = size;
     updateUI(size);
 
-    // AJUSTAR CÂMERA AUTOMATICAMENTE
+    // câmera automática
     let maxDim = Math.max(size.x, size.y, size.z);
     let distance = maxDim * 2;
 
