@@ -1,6 +1,3 @@
-import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
-
 let scene = new THREE.Scene();
 scene.background = new THREE.Color(0xaaaaaa);
 
@@ -19,15 +16,15 @@ scene.add(light);
 let grid = new THREE.GridHelper(10, 10);
 scene.add(grid);
 
-let loader = new GLTFLoader();
+let loader = new THREE.GLTFLoader();
 
 let model, originalSize;
 let scale = 1;
 
 loader.load(
-  './sofa-base.glb',
+  'sofa-base.glb',
 
-  (gltf)=>{
+  function(gltf){
     console.log("MODELO CARREGADO");
 
     model = gltf.scene;
@@ -45,7 +42,7 @@ loader.load(
     originalSize = size;
     updateUI(size);
 
-    // câmera automática
+    // ajustar câmera
     let maxDim = Math.max(size.x, size.y, size.z);
     let distance = maxDim * 2;
 
@@ -55,7 +52,7 @@ loader.load(
 
   undefined,
 
-  (error)=>{
+  function(error){
     console.error("ERRO AO CARREGAR:", error);
   }
 );
@@ -68,12 +65,12 @@ function updateUI(size){
 }
 
 // escala
-window.scaleUp = ()=>{
+function scaleUp(){
     scale += 0.1;
     apply();
 }
 
-window.scaleDown = ()=>{
+function scaleDown(){
     scale -= 0.1;
     if(scale < 0.1) scale = 0.1;
     apply();
