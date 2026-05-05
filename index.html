@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>sofa-base.glb</title>
+  <title>Sofá Teste</title>
 </head>
 
-<body style="margin:0;">
+<body style="margin:0; overflow:hidden;">
 
 <div style="position:absolute;top:10px;left:10px;background:white;padding:10px;">
   Largura: <span id="w">0</span> cm<br>
@@ -13,15 +13,17 @@
   Profundidade: <span id="d">0</span> cm
 </div>
 
-<button onclick="scaleUp()" style="position:absolute;bottom:20px;left:40%;">
-  +
-</button>
+<button onclick="scaleUp()" style="position:absolute;bottom:20px;left:40%;">+</button>
+<button onclick="scaleDown()" style="position:absolute;bottom:20px;left:50%;">-</button>
 
-<button onclick="scaleDown()" style="position:absolute;bottom:20px;left:50%;">
-  -
-</button>
+<!-- THREE -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.158/build/three.min.js"></script>
 
-<script type="module" src="main.js"></script>
+<!-- GLTF LOADER -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.158/examples/js/loaders/GLTFLoader.js"></script>
+
+<!-- SEU SCRIPT -->
+<script src="main.js"></script>
 
 </body>
 </html>
